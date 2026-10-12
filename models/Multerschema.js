@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const multerSchema = new mongoose.Schema({
-  
+
     name: {
         type: String,
         required: true
@@ -12,17 +12,20 @@ const multerSchema = new mongoose.Schema({
         required: true
     },
 
-    image: {
-        filename: {
-            type: String,
-            required: true
-        },
+    image: [
+        {
+            filename: {
+                type: String,
+                required: true
+            },
 
-        filepath: {
-            type: String,
-            required: true
+            filepath: {
+                type: String,
+                required: true
+            }
         }
-    }
+    ]
+
 });
 
 const multermodel = mongoose.model("Multer", multerSchema);

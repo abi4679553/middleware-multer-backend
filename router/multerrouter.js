@@ -10,12 +10,12 @@ const MulterRouter = express.Router();
 
 MulterRouter.post(
     "/create-images",
-    upload.single("image"),
+    upload.array("image", 5),
     async (req, res) => {
         try {
             const { name, age } = req.body;
 
-            if (!name || !age || !req.file) {
+            if (!name || !age || !req.files) {
                 return res.status(400).json({
                     success: false,
                     message: "All fields are required",
@@ -25,10 +25,10 @@ MulterRouter.post(
             const newData = new multermodel({
                 name: name,
                 age: age,
-                image: {
-                    filename: req.file.filename,
-                    filepath: req.file.path,
-                },
+                image: req.files.map((file) => ({
+                    filename: file.filename,
+                    filepath: file.path,
+                })),
             });
 
             const savedData = await newData.save();
