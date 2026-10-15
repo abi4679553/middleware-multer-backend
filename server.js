@@ -1,25 +1,22 @@
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
-
-const indexRouter = require("./router");
-
-const multerrouter = require("./router");
-
+const Index = require('./router/index')
 const Session = require("express-session");
 const MongoDBSession = require("connect-mongodb-session")(Session);
 
-dotenv.config();
 
-const app = express();
+
+const app = express();  
 
 // =========================
 // CORS
 // =========================
 
-app.use(
-  cors({
+app.use( 
+  cors({ 
     origin: [
       "http://localhost:3000",
       "http://localhost:3001",
@@ -70,10 +67,7 @@ app.use(
 // =========================
 // ROUTES
 // =========================
-
-app.use("/", indexRouter);
-
-app.use("/", multerrouter);
+app.use(Index)
 
 // =========================
 // MONGODB

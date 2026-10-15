@@ -4,10 +4,15 @@ const router = express.Router();
 
 const Authrouter = require("./Authrouter");
 
-const multerrouter = require("./multerrouter")
+// const multerrouter = require("./multerrouter")
 
-router.use("/", Authrouter);
+const ImageRouter = require('./ImageRouter')
 
-router.use("/", multerrouter )
+
+router.use(Authrouter);
+
+// router.use(multerrouter)
+
+router.use(ImageRouter)
 
 module.exports = router;
