@@ -1,33 +1,35 @@
 const mongoose = require("mongoose");
 
-const multerSchema = new mongoose.Schema({
+const multerSchema = new mongoose.Schema(
+    {
+        name: {
+            type: String,
+            required: true,
+            trim: true,
+        },
 
-    name: {
-        type: String,
-        required: true
-    },
+        age: {
+            type: Number,
+            required: true,
+        },
 
-    age: {
-        type: Number,
-        required: true
-    },
+        image: [
+            {
+                filename: {
+                    type: String,
+                    required: true,
+                },
 
-    image: [
-        {
-            filename: {
-                type: String,
-                required: true
+                filepath: {
+                    type: String,
+                    required: true,
+                },
             },
+        ],
+    },
+    {
+        timestamps: true,
+    }
+);
 
-            filepath: {
-                type: String,
-                required: true
-            }
-        }
-    ]
-
-});
-
-const multermodel = mongoose.model("Multer", multerSchema);
-
-module.exports = multermodel;
+module.exports = mongoose.model("Multer", multerSchema);

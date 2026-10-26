@@ -1,93 +1,42 @@
 require("dotenv").config();
+
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
-const dotenv = require("dotenv");
-const Index = require('./router/index')
-const Session = require("express-session");
-const MongoDBSession = require("connect-mongodb-session")(Session);
 
+const Index = require("./router/index");
+const ImageRouter = require("./router/ImageRouter");
+const app = express();
 
-
-const app = express();  
-
-// =========================
-// CORS
-// =========================
-
-app.use( 
-  cors({ 
-    origin: [
-      "http://localhost:3000",
-      "http://localhost:3001",
-    ],
-    credentials: true,
-  })
+app.use(
+    cors({
+        origin: [
+            "http://localhost:3000",
+            "http://localhost:3001",
+        ],
+        credentials: true,
+    })
 );
-
-// =========================
-// JSON
-// =========================
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// =========================
-// SESSION STORE
-// =========================
+// Existing routes
+app.use(Index);
 
-const store = new MongoDBSession({
-  uri: process.env.MONGO_URI,
-  collection: "session",
-});
-
-// =========================
-// SESSION
-// =========================
-
-app.use(
-  Session({
-    secret: process.env.Session_key,
-
-    resave: false,
-
-    saveUninitialized: false,
-
-    store: store,
-
-    cookie: {
-      maxAge: 24 * 60 * 60 * 1000,
-      httpOnly: true,
-      secure: false,
-      sameSite: "lax",
-    },
-  })
-);
-
-// =========================
-// ROUTES
-// =========================
-app.use(Index)
-
-// =========================
-// MONGODB
-// =========================
+app.use("/", ImageRouter);
 
 mongoose
-  .connect(process.env.MONGO_URI)
-  .then(() => {
-    console.log("MONGODB is connected");
-  })
-  .catch((error) => {
-    console.log("MONGODB connection error:", error);
-  });
-
-// =========================
-// SERVER
-// =========================
+    .connect(process.env.MONGO_URI)
+    .then(() => {
+        console.log("MongoDB connected successfully");
+    })
+    .catch((error) => {
+        console.error("MongoDB connection error:", error.message);
+    });
 
 const PORT = 5000;
 
 app.listen(PORT, () => {
-  console.log(`Server is running on the port ${PORT}`);
+    console.log(`Server is running on port ${PORT}`);
 });
