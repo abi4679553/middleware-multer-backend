@@ -3,6 +3,7 @@ const express = require("express");
 const multermodel = require("../models/Multerschema");
 const upload = require("../until/uploadMiddleware");
 const cloudinary = require("../config/cloudinary");
+const Image = require("../models/ImageModel");
 
 const MulterRouter = express.Router();
 
@@ -45,6 +46,13 @@ MulterRouter.post(
                         stream.end(file.buffer);
                     })
                 )
+            );
+            await Image.insertMany(
+                uploadedImages.map((img) => ({
+                    name,
+                    imageUrl: img.filepath,
+                    publicId: img.filename,
+                }))
             );
 
             const newData = new multermodel({

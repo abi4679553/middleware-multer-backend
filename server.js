@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 
 const Index = require("./router/index");
 const ImageRouter = require("./router/ImageRouter");
+const MulterRouter = require("./router/multerrouter")
 const app = express();
 
 app.use(
@@ -25,6 +26,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(Index);
 
 app.use("/", ImageRouter);
+app.use("/", MulterRouter);
 
 mongoose
     .connect(process.env.MONGO_URI)
