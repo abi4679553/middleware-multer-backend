@@ -7,6 +7,7 @@ const mongoose = require("mongoose");
 const Index = require("./router/index");
 const ImageRouter = require("./router/ImageRouter");
 const MulterRouter = require("./router/multerrouter")
+const ProfileRouter = require("./router/ProfileRouter");
 const app = express();
 
 app.use(
@@ -23,8 +24,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Existing routes
-app.use(Index);
+app.use("/", ProfileRouter);
 
+app.use(Index);
 app.use("/", ImageRouter);
 app.use("/", MulterRouter);
 
